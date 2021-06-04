@@ -1,0 +1,17 @@
+{
+    "name": "codeofdigital/laravel-url-shortener",
+    "description": "Powerful URL shoterning tools for your Laravel projects",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bryan adam loh",
+            "email": "bryanadamloh97@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "codeofdigital\\laravel-url-shortener": "src"
+        }
+    }
+}
