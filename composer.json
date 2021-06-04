@@ -1,6 +1,16 @@
 {
     "name": "codeofdigital/laravel-url-shortener",
     "description": "Powerful URL shoterning tools for your Laravel projects",
+    "keywords": [
+        "laravel",
+        "lumen",
+        "url",
+        "shortener",
+        "short-url",
+        "shortening",
+        "bit.ly"
+    ],
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
@@ -8,10 +18,21 @@
             "email": "bryanadamloh97@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": "^7.2",
+        "guzzlehttp/guzzle": "^6.2",
+        "guzzlehttp/promises": "^1.0",
+        "guzzlehttp/psr7": "^1.4",
+        "illuminate/support": "^5.1 || ^6.0 || ^7.0",
+        "psr/http-message": "^1.0"
+    },
+    "require-dev": {
+        "illuminate/routing": "^5.1 || ^6.0 || ^7.0",
+        "phpunit/phpunit": "^7.0"
+    },
     "autoload": {
         "psr-4": {
-            "codeofdigital\\laravel-url-shortener": "src"
+            "CodeOfDigital\\LaravelUrlShortener\\": "src"
         }
     }
 }
