@@ -3,11 +3,14 @@
 namespace CodeOfDigital\LaravelUrlShortener;
 
 use CodeOfDigital\LaravelUrlShortener\Contracts\UrlFactory;
+use CodeOfDigital\LaravelUrlShortener\Drivers\BitLyDriverShortener;
+use GuzzleHttp\ClientInterface;
 use http\Exception\InvalidArgumentException;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-class UrlShortenerInstance implements UrlFactory
+class UrlShortener implements UrlFactory
 {
     protected $app;
     protected $shorteners;
@@ -21,6 +24,33 @@ class UrlShortenerInstance implements UrlFactory
     {
         $this->app = $app;
         $this->shorteners = [];
+    }
+
+    /**
+     * Dynamically call the default driver instance
+     *
+     * @param $method
+     * @param $parameters
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        return $this->driver()->$method(...$parameters);
+    }
+
+    /**
+     * Create an instance of Bit.ly driver
+     *
+     * @param array $config
+     * @return BitLyDriverShortener
+     */
+    protected function createBitLyDriver(array $config)
+    {
+        return new BitLyDriverShortener(
+            $this->app->make(ClientInterface::class),
+            Arr::get($config, 'token'),
+            Arr::get($config, 'domain', 'bit.ly')
+        );
     }
 
     /**
@@ -38,18 +68,41 @@ class UrlShortenerInstance implements UrlFactory
      *
      * @return $this
      */
-    public function setUrlDefaultDriver($name): UrlShortenerInstance
+    public function setUrlDefaultDriver($name): UrlShortener
     {
         $this->app['config']['url-shortener.default'] = $name;
         return $this;
     }
 
-    public function getUrlShortenerConfig($name)
+    /**
+     * Get the URL shortener configuration in array form
+     *
+     * @param $name
+     * @return mixed
+     */
+    protected function getUrlShortenerConfig($name)
     {
-        return config("url-shortener.shorteners.{$name}");
+        return $this->app['config']["url-shortener.shorteners.{$name}"];
     }
 
-    public function resolveUrlDriver($name)
+    /**
+     * Get a URL shortener driver instance
+     *
+     * @param null $name
+     * @return mixed
+     */
+    public function driver($name = null)
+    {
+        return $this->shortener($name);
+    }
+
+    /**
+     * Resolve the URL driver by creating an instance of the given URL shortener
+     *
+     * @param $name
+     * @return mixed
+     */
+    protected function resolveUrlDriver($name)
     {
         $config = $this->getUrlShortenerConfig($name);
 
