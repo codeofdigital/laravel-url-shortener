@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'default' => env('URL_SHORTENER_DRIVER', 'tiny_url'),
+    'default' => env('URL_SHORTENER_DRIVER', 'bit.ly'),
 
     'shorteners' => [
         'bit.ly' => [
