@@ -4,6 +4,7 @@ namespace CodeOfDigital\LaravelUrlShortener;
 
 use CodeOfDigital\LaravelUrlShortener\Contracts\UrlFactory;
 use CodeOfDigital\LaravelUrlShortener\Drivers\BitLyDriverShortener;
+use CodeOfDigital\LaravelUrlShortener\Drivers\TinyUrlDriverShortener;
 use GuzzleHttp\ClientInterface;
 use http\Exception\InvalidArgumentException;
 use Illuminate\Foundation\Application;
@@ -50,6 +51,21 @@ class UrlShortener implements UrlFactory
             $this->app->make(ClientInterface::class),
             Arr::get($config, 'token'),
             Arr::get($config, 'domain', 'bit.ly')
+        );
+    }
+
+    /**
+     * Create an instance of TinyURL driver
+     *
+     * @param array $config
+     * @return TinyUrlDriverShortener
+     */
+    protected function createTinyUrlDriver(array $config)
+    {
+        return new TinyUrlDriverShortener(
+            $this->app->make(ClientInterface::class),
+            Arr::get($config, 'token'),
+            Arr::get($config, 'domain', 'tinyurl.com')
         );
     }
 

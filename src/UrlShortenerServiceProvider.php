@@ -27,12 +27,19 @@ class UrlShortenerServiceProvider extends ServiceProvider
 
     protected function registerMacros()
     {
+        if (!class_exists(UrlGenerator::class) || !method_exists(UrlGenerator::class, 'macro'))
+            return;
+
         UrlGenerator::macro('shorten', function (...$parameters) {
-           return app('url.shortener')->shorten(...$parameters);
+            return app('url.shortener')->shorten(...$parameters);
         });
 
         UrlGenerator::macro('shortenAsync', function (...$parameters) {
-           return app('url.shortener')->shortenAsync(...$parameters);
+            return app('url.shortener')->shortenAsync(...$parameters);
+        });
+
+        UrlGenerator::macro('shortener', function () {
+            return app('url.shortener');
         });
     }
 

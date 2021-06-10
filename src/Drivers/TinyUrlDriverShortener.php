@@ -7,7 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
 
-class BitLyDriverShortener extends DriverShortener
+class TinyUrlDriverShortener extends DriverShortener
 {
     protected $client;
     protected $object;
@@ -17,7 +17,7 @@ class BitLyDriverShortener extends DriverShortener
         $this->client = $client;
         $this->object = [
             'allow_redirects' => false,
-            'base_uri' => 'https://api-ssl.bitly.com',
+            'base_uri' => 'https://api.tinyurl.com',
             'headers' => [
                 'Accept' => 'application/json',
                 'Authorization' => "Bearer {$token}",
@@ -34,11 +34,11 @@ class BitLyDriverShortener extends DriverShortener
      */
     public function shortenAsync($url, array $options = [])
     {
-        $options = array_merge_recursive(Arr::add($this->object, 'json.long_url', $url), $options);
-        $request = new Request('POST', '/v4/shorten');
+        $options = array_merge_recursive(Arr::add($this->object, 'json.url', $url), $options);
+        $request = new Request('POST', '/create');
 
         return $this->client->sendAsync($request, $options)->then(function (ResponseInterface $response) {
-            return str_replace('http://', 'https://', json_decode($response->getBody()->getContents())->link);
+            return str_replace('http://', 'https://', json_decode($response->getBody()->getContents())->data->tiny_url);
         });
     }
 }
