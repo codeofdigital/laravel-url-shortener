@@ -6,11 +6,16 @@ use CodeOfDigital\LaravelUrlShortener\Contracts\UrlFactory;
 use CodeOfDigital\LaravelUrlShortener\Drivers\BitLyDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\TinyUrlDriverShortener;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use http\Exception\InvalidArgumentException;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
+/**
+ * @method string shorten($url, array $options = [])
+ * @method PromiseInterface shortenAsync($url, array $options = [])
+ */
 class UrlShortener implements UrlFactory
 {
     protected $app;
