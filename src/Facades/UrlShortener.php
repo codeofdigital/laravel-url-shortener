@@ -6,6 +6,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Support\Facades\Facade;
 
 /**
+ * @method static mixed driver($name = null)
  * @method static string shorten($url, array $options = [])
  * @method static PromiseInterface shortenAsync($url, array $options = [])
  *

@@ -7,25 +7,24 @@ use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
 
-class TinyUrlDriverShortener extends DriverShortener
+class ShorteStDriverShortener extends DriverShortener
 {
     protected $client;
     protected $object;
 
-    public function __construct(ClientInterface $client, $token, $domain)
+    public function __construct(ClientInterface $client, $token)
     {
         $this->client = $client;
         $this->object = [
             'allow_redirects' => false,
-            'base_uri' => 'https://api.tinyurl.com',
+            'verify' => false,
+            'base_uri' => 'https://api.shorte.st',
             'headers' => [
                 'Accept' => 'application/json',
-                'Authorization' => "Bearer {$token}",
+                'Public-API-Token' => $token,
                 'Content-Type' => 'application/json'
             ],
-            'json' => [
-                'domain' => $domain
-            ]
+            'json' => []
         ];
     }
 
@@ -34,11 +33,11 @@ class TinyUrlDriverShortener extends DriverShortener
      */
     public function shortenAsync($url, array $options = [])
     {
-        $options = array_merge_recursive(Arr::add($this->object, 'json.url', $url), ['json' => $options]);
-        $request = new Request('POST', '/create');
+        $options = array_merge_recursive(Arr::add($this->object, 'json.urlToShorten', $url), ['json' => $options]);
+        $request = new Request('PUT', '/v1/data/url');
 
         return $this->client->sendAsync($request, $options)->then(function (ResponseInterface $response) {
-            return str_replace('http://', 'https://', json_decode($response->getBody()->getContents())->data->tiny_url);
+            return json_decode($response->getBody()->getContents())->shortenedUrl;
         });
     }
 }

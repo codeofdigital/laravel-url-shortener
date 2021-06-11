@@ -4,6 +4,8 @@ namespace CodeOfDigital\LaravelUrlShortener;
 
 use CodeOfDigital\LaravelUrlShortener\Contracts\UrlFactory;
 use CodeOfDigital\LaravelUrlShortener\Drivers\BitLyDriverShortener;
+use CodeOfDigital\LaravelUrlShortener\Drivers\IsGdDriverShortener;
+use CodeOfDigital\LaravelUrlShortener\Drivers\ShorteStDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\TinyUrlDriverShortener;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -71,6 +73,34 @@ class UrlShortener implements UrlFactory
             $this->app->make(ClientInterface::class),
             Arr::get($config, 'token'),
             Arr::get($config, 'domain', 'tinyurl.com')
+        );
+    }
+
+    /**
+     * Create an instance of Shorte.st driver
+     *
+     * @param array $config
+     * @return ShorteStDriverShortener
+     */
+    protected function createShorteStDriver(array $config)
+    {
+        return new ShorteStDriverShortener(
+            $this->app->make(ClientInterface::class),
+            Arr::get($config, 'token')
+        );
+    }
+
+    /**
+     * Create an instance of Is.gd driver
+     *
+     * @param array $config
+     * @return IsGdDriverShortener
+     */
+    protected function createIsGdDriver(array $config)
+    {
+        return new IsGdDriverShortener(
+            $this->app->make(ClientInterface::class),
+            Arr::get($config, 'statistic')
         );
     }
 

@@ -34,7 +34,7 @@ class BitLyDriverShortener extends DriverShortener
      */
     public function shortenAsync($url, array $options = [])
     {
-        $options = array_merge_recursive(Arr::add($this->object, 'json.long_url', $url), $options);
+        $options = array_merge_recursive(Arr::add($this->object, 'json.long_url', $url), ['json' => $options]);
         $request = new Request('POST', '/v4/shorten');
 
         return $this->client->sendAsync($request, $options)->then(function (ResponseInterface $response) {
