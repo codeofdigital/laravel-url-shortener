@@ -2,7 +2,11 @@
 
 namespace CodeOfDigital\LaravelUrlShortener\Drivers;
 
+use CodeOfDigital\LaravelUrlShortener\Exceptions\BadRequestException;
+use CodeOfDigital\LaravelUrlShortener\Exceptions\InvalidApiTokenException;
+use CodeOfDigital\LaravelUrlShortener\Exceptions\InvalidResponseException;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
@@ -36,8 +40,25 @@ class ShorteStDriverShortener extends DriverShortener
         $options = array_merge_recursive(Arr::add($this->object, 'json.urlToShorten', $url), ['json' => $options]);
         $request = new Request('PUT', '/v1/data/url');
 
-        return $this->client->sendAsync($request, $options)->then(function (ResponseInterface $response) {
-            return json_decode($response->getBody()->getContents())->shortenedUrl;
-        });
+        return $this->client->sendAsync($request, $options)->then(
+            function (ResponseInterface $response) {
+                if ($response->getStatusCode() == 302)
+                    $this->getErrorMessage($response->getStatusCode(), "Your API Token is invalid. Please try a new API Token.");
+
+                return json_decode($response->getBody()->getContents())->shortenedUrl;
+            },
+            function (RequestException $e) {
+                $this->getErrorMessage($e->getCode(), $e->getMessage());
+            }
+        );
+    }
+
+    protected function getErrorMessage($code, $message = null)
+    {
+        switch ($code) {
+            case 302: throw new InvalidApiTokenException($message);
+            case 400: throw new BadRequestException($message);
+            default: throw new InvalidResponseException($message);
+        }
     }
 }
