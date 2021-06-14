@@ -9,7 +9,7 @@ interface AsyncShortener extends Shortener
     /**
      * Shorten the given URL asynchronously
      *
-     * @param string $url
+     * @param $url
      * @param array $options
      * @return PromiseInterface
      */

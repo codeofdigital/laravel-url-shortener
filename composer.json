@@ -36,7 +36,17 @@
     },
     "autoload": {
         "psr-4": {
-            "CodeOfDigital\\LaravelUrlShortener\\": "src"
+            "CodeOfDigital\\LaravelUrlShortener\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CodeOfDigital\\LaravelUrlShortener\\UrlShortenerServiceProvider"
+            ],
+            "aliases": {
+                "UrlShortener": "CodeOfDigital\\LaravelUrlShortener\\Facades\\UrlShortener"
+            }
         }
     }
 }

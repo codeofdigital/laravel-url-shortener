@@ -7,10 +7,12 @@ use CodeOfDigital\LaravelUrlShortener\Exceptions\InvalidApiTokenException;
 use CodeOfDigital\LaravelUrlShortener\Exceptions\InvalidDataException;
 use CodeOfDigital\LaravelUrlShortener\Exceptions\InvalidResponseException;
 use CodeOfDigital\LaravelUrlShortener\Exceptions\MethodNotAllowedException;
+use CodeOfDigital\LaravelUrlShortener\Exceptions\ShortUrlException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 
 class TinyUrlDriverShortener extends DriverShortener
@@ -40,6 +42,9 @@ class TinyUrlDriverShortener extends DriverShortener
      */
     public function shortenAsync($url, array $options = [])
     {
+        if (!Str::startsWith($url, ['http://', 'https://']))
+            throw new ShortUrlException('The given URL must begin with http:// or https://');
+
         $options = array_merge_recursive(Arr::add($this->object, 'json.url', $url), ['json' => $options]);
         $request = new Request('POST', '/create');
 
