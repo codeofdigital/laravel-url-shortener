@@ -32,12 +32,20 @@
     },
     "require-dev": {
         "illuminate/routing": "^5.1 || ^6.0 || ^7.0",
-        "phpunit/phpunit": "^7.0"
+        "phpunit/phpunit": "^8.2"
     },
     "autoload": {
         "psr-4": {
             "CodeOfDigital\\LaravelUrlShortener\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CodeOfDigital\\LaravelUrlShortener\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "tests": "./vendor/bin/phpunit --colors=always"
     },
     "extra": {
         "laravel": {
