@@ -1,20 +1,24 @@
 {
     "name": "codeofdigital/laravel-url-shortener",
-    "description": "Powerful URL shoterning tools for your Laravel projects",
+    "description": "Powerful URL shoterning tools using different drivers for your Laravel projects",
     "keywords": [
         "laravel",
-        "lumen",
         "url",
+        "url-shortening",
         "shortener",
         "short-url",
         "shortening",
-        "bit.ly"
+        "bit.ly",
+        "shorte.st",
+        "tinyurl",
+        "is.gd",
+        "cutt.ly"
     ],
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "bryan adam loh",
+            "name": "Bryan Adam Loh",
             "email": "bryanadamloh97@gmail.com"
         }
     ],
