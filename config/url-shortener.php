@@ -25,6 +25,11 @@ return [
         'is_gd' => [
             'driver' => 'is_gd',
             'statistic' => env('URL_SHORTENER_ANALYTICS', false)
+        ],
+
+        'cutt_ly' => [
+            'driver' => 'cutt_ly',
+            'token' => env('URL_SHORTENER_API_TOKEN')
         ]
     ]
 ];

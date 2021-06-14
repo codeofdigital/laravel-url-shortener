@@ -4,6 +4,7 @@ namespace CodeOfDigital\LaravelUrlShortener;
 
 use CodeOfDigital\LaravelUrlShortener\Contracts\UrlFactory;
 use CodeOfDigital\LaravelUrlShortener\Drivers\BitLyDriverShortener;
+use CodeOfDigital\LaravelUrlShortener\Drivers\CuttLyDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\IsGdDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\ShorteStDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\TinyUrlDriverShortener;
@@ -101,6 +102,20 @@ class UrlShortener implements UrlFactory
         return new IsGdDriverShortener(
             $this->app->make(ClientInterface::class),
             Arr::get($config, 'statistic')
+        );
+    }
+
+    /**
+     * Create an instance of Cutt.ly driver
+     *
+     * @param array $config
+     * @return CuttLyDriverShortener
+     */
+    protected function createCuttLyDriver(array $config)
+    {
+        return new CuttLyDriverShortener(
+            $this->app->make(ClientInterface::class),
+            Arr::get($config, 'token')
         );
     }
 
