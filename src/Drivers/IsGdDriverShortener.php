@@ -25,7 +25,7 @@ class IsGdDriverShortener extends DriverShortener
             'allow_redirects' => false,
             'base_uri' => 'https://is.gd',
             'query' => [
-                'format' => 'json',
+                'format' => 'simple',
                 'logstats' => intval($statistic)
             ]
         ];
@@ -44,7 +44,7 @@ class IsGdDriverShortener extends DriverShortener
 
         return $this->client->sendAsync($request, $options)->then(
             function (ResponseInterface $response) {
-                return str_replace('http://', 'https://', json_decode($response->getBody()->getContents())->shorturl);
+                return str_replace('http://', 'https://', $response->getBody()->getContents());
             },
             function (RequestException $e) {
                 $this->getErrorMessage($e->getCode(), $e->getMessage());

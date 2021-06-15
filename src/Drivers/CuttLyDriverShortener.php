@@ -7,6 +7,7 @@ use CodeOfDigital\LaravelUrlShortener\Exceptions\InvalidApiTokenException;
 use CodeOfDigital\LaravelUrlShortener\Exceptions\InvalidDataException;
 use CodeOfDigital\LaravelUrlShortener\Exceptions\InvalidResponseException;
 use CodeOfDigital\LaravelUrlShortener\Exceptions\ShortUrlException;
+use CodeOfDigital\LaravelUrlShortener\Exceptions\TooManyRequestException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
@@ -39,14 +40,15 @@ class CuttLyDriverShortener extends DriverShortener
         if (!Str::startsWith($url, ['http://', 'https://']))
             throw new ShortUrlException('The given URL must begin with http:// or https://');
 
-        $options = array_merge_recursive(Arr::add($this->object, 'query.short', urlencode($url)), ['query' => $options]);
+        $options = array_merge_recursive(Arr::add($this->object, 'query.short', $url), ['query' => $options]);
         $request = new Request('GET', '/api/api.php');
 
         return $this->client->sendAsync($request, $options)->then(
             function (ResponseInterface $response) {
-                $statusCode = json_decode($response->getBody()->getContents())->url->status;
+                $data = json_decode($response->getBody()->getContents());
+                $statusCode = $data->url->status;
                 if ($statusCode != 7) $this->getErrorMessage($statusCode);
-                return str_replace('http://', 'https://', json_decode($response->getBody()->getContents())->url->shortLink);
+                return str_replace('http://', 'https://', $data->url->shortLink);
             },
             function (RequestException $e) {
                 $this->getErrorMessage($e->getCode(), $e->getMessage());
@@ -65,7 +67,9 @@ class CuttLyDriverShortener extends DriverShortener
                 throw new InvalidDataException("The preferred link name is already taken.");
             case 4:
             case 401:
-                throw new InvalidApiTokenException("Your API Key is invalid and incorrect.");
+                throw new InvalidApiTokenException($message ?? "Your API Key is invalid and incorrect.");
+            case 429:
+                throw new TooManyRequestException($message);
             case 5:
                 throw new InvalidDataException("The link has not passed validated. There is invalid characters.");
             case 6:

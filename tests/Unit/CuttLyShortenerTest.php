@@ -2,50 +2,48 @@
 
 namespace CodeOfDigital\LaravelUrlShortener\Tests\Unit;
 
-use CodeOfDigital\LaravelUrlShortener\Drivers\BitLyDriverShortener;
+use CodeOfDigital\LaravelUrlShortener\Drivers\CuttLyDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Exceptions\InvalidApiTokenException;
 use CodeOfDigital\LaravelUrlShortener\Exceptions\ShortUrlException;
 
-class BitLyShortenerTest extends TestCase
+class CuttLyShortenerTest extends TestCase
 {
     protected $shortener;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->shortener = new BitLyDriverShortener($this->client, 'API_TOKEN', false);
+        $this->shortener = new CuttLyDriverShortener($this->client, 'API_TOKEN');
     }
 
     /**
-     * Test the URL Shortening through Bit.ly
+     * Test the URL Shortening through Cutt.ly
      *
      * @throws ShortUrlException
      */
     public function testUrlShortening()
     {
-        $this->client->queue(require __DIR__ . '/../Responses/bit_ly/http-200.php');
+        $this->client->queue(require __DIR__ . '/../Responses/cutt_ly/http-200.php');
 
         $shortUrl = $this->shortener->shorten('https://laravel.com');
         $request = $this->client->getRequest(0);
 
         $this->assertNotNull($request);
-        $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('api-ssl.bitly.com', $request->getUri()->getHost());
-        $this->assertEquals('/v4/shorten', $request->getRequestTarget());
-        $this->assertEquals('Bearer API_TOKEN', $request->getHeader('Authorization')[0]);
-        $this->assertEquals('application/json', $request->getHeader('Content-Type')[0]);
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('cutt.ly', $request->getUri()->getHost());
+        $this->assertEquals('/api/api.php?key=API_TOKEN&short=https%3A%2F%2Flaravel.com', $request->getRequestTarget());
 
-        $this->assertEquals('https://bit.ly/3iSAOvF', $shortUrl);
+        $this->assertEquals('https://cutt.ly/lnHBR1m', $shortUrl);
     }
 
     /**
-     * Test failure to authenticate with Bit.ly
+     * Test failure to authenticate with Cutt.ly
      *
      * @throws ShortUrlException
      */
     public function testUnauthorized()
     {
-        $this->client->queue(require __DIR__ . '/../Responses/bit_ly/http-403.php');
+        $this->client->queue(require __DIR__ . '/../Responses/cutt_ly/http-401.php');
         $this->expectException(InvalidApiTokenException::class);
         $this->shortener->shorten('https://laravel.com');
     }
