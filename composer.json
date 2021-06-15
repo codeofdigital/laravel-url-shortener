@@ -1,7 +1,9 @@
 {
     "name": "codeofdigital/laravel-url-shortener",
     "description": "Powerful URL shoterning tools using different drivers for your Laravel projects",
+    "homepage": "https://github.com/codeofdigital/laravel-url-shortener",
     "keywords": [
+        "codeofdigital",
         "laravel",
         "url",
         "url-shortening",
