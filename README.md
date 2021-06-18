@@ -1,6 +1,14 @@
 # Laravel URL Shortener
 Powerful URL shortening tool using different drivers for your Laravel projects
 
+<p>
+<a href="https://packagist.org/packages/codeofdigital/laravel-url-shortener"><img src="https://img.shields.io/packagist/v/codeofdigital/laravel-url-shortener" alt="Latest Version on Packagist"></a>
+<a href="https://github.com/codeofdigital/laravel-url-shortener"><img src="https://img.shields.io/github/v/release/codeofdigital/laravel-url-shortener" alt="Latest Release on GitHub"></a>
+<a href="https://github.com/codeofdigital/laravel-url-shortener"><img src="https://img.shields.io/github/workflow/status/codeofdigital/laravel-url-shortener/run-tests" alt="Build Status"></a>
+<a href="https://packagist.org/packages/codeofdigital/laravel-url-shortener"><img src="https://img.shields.io/packagist/php-v/codeofdigital/laravel-url-shortener" alt="PHP from Packagist"></a>
+<a href="https://github.com/codeofdigital/laravel-url-shortener/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/codeofdigital/laravel-url-shortener" alt="GitHub license"></a>
+</p>
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -25,7 +33,7 @@ and pricing for different usages.
 The package has been developed to work with the following versions and minimum requirements:
 
 - PHP 7.2 or higher
-- Laravel 5.5 or higher
+- Laravel 6.0 or higher
 
 ### Install Pacakge
 You can install the package via the latest Composer:
