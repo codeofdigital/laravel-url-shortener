@@ -43,7 +43,7 @@ class TinyUrlDriverShortener extends DriverShortener
     public function shortenAsync($url, array $options = [])
     {
         if (!Str::startsWith($url, ['http://', 'https://']))
-            throw new ShortUrlException('The given URL must begin with http:// or https://');
+            throw new ShortUrlException('The given URL must begin with http/https');
 
         $options = array_merge_recursive(Arr::add($this->object, 'json.url', $url), ['json' => $options]);
         $request = new Request('POST', '/create');
@@ -53,7 +53,9 @@ class TinyUrlDriverShortener extends DriverShortener
                 return str_replace('http://', 'https://', json_decode($response->getBody()->getContents())->data->tiny_url);
             },
             function (RequestException $e) {
-                $this->getErrorMessage($e->getCode(), $e->getMessage());
+                $contents = json_decode($e->getResponse()->getBody()->getContents());
+                $errorMessage = implode(' ', $contents->errors);
+                $this->getErrorMessage($e->getCode(), $errorMessage);
             }
         );
     }

@@ -42,7 +42,7 @@ class BitLyDriverShortener extends DriverShortener
     public function shortenAsync($url, array $options = [])
     {
         if (!Str::startsWith($url, ['http://', 'https://']))
-            throw new ShortUrlException('The given URL must begin with http:// or https://');
+            throw new ShortUrlException('The given URL must begin with http/https');
 
         $options = array_merge_recursive(Arr::add($this->object, 'json.long_url', $url), ['json' => $options]);
         $request = new Request('POST', '/v4/shorten');
@@ -52,7 +52,8 @@ class BitLyDriverShortener extends DriverShortener
                 return str_replace('http://', 'https://', json_decode($response->getBody()->getContents())->link);
             },
             function (RequestException $e) {
-                $this->getErrorMessage($e->getCode(), $e->getMessage());
+                $contents = json_decode($e->getResponse()->getBody()->getContents());
+                $this->getErrorMessage($e->getCode(), $contents->description ?? $contents->message);
             }
         );
     }

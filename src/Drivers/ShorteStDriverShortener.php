@@ -40,8 +40,8 @@ class ShorteStDriverShortener extends DriverShortener
      */
     public function shortenAsync($url, array $options = [])
     {
-        if (!Str::startsWith($url, ['http://', 'https://']))
-            throw new ShortUrlException('The given URL must begin with http:// or https://');
+        /*if (!Str::startsWith($url, ['http://', 'https://']))
+            throw new ShortUrlException('The given URL must begin with http/https');*/
 
         $options = array_merge_recursive(Arr::add($this->object, 'json.urlToShorten', $url), ['json' => $options]);
         $request = new Request('PUT', '/v1/data/url');

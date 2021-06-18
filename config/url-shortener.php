@@ -30,6 +30,13 @@ return [
         'cutt_ly' => [
             'driver' => 'cutt_ly',
             'token' => env('URL_SHORTENER_API_TOKEN')
+        ],
+
+        'firebase' => [
+            'driver' => 'firebase',
+            'domain' => env('URL_SHORTENER_PREFIX'),
+            'token' => env('URL_SHORTENER_API_TOKEN'),
+            'suffix' => env('URL_SHORTENER_SUFFIX', 'UNGUESSABLE')
         ]
     ]
 ];

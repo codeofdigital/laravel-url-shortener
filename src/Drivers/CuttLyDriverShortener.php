@@ -38,7 +38,7 @@ class CuttLyDriverShortener extends DriverShortener
     public function shortenAsync($url, array $options = [])
     {
         if (!Str::startsWith($url, ['http://', 'https://']))
-            throw new ShortUrlException('The given URL must begin with http:// or https://');
+            throw new ShortUrlException('The given URL must begin with http/https');
 
         $options = array_merge_recursive(Arr::add($this->object, 'query.short', $url), ['query' => $options]);
         $request = new Request('GET', '/api/api.php');
@@ -51,7 +51,7 @@ class CuttLyDriverShortener extends DriverShortener
                 return str_replace('http://', 'https://', $data->url->shortLink);
             },
             function (RequestException $e) {
-                $this->getErrorMessage($e->getCode(), $e->getMessage());
+                $this->getErrorMessage($e->getCode(), $e->getResponse()->getBody()->getContents());
             }
         );
     }

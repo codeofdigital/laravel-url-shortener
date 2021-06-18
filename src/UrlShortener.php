@@ -5,6 +5,7 @@ namespace CodeOfDigital\LaravelUrlShortener;
 use CodeOfDigital\LaravelUrlShortener\Contracts\UrlFactory;
 use CodeOfDigital\LaravelUrlShortener\Drivers\BitLyDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\CuttLyDriverShortener;
+use CodeOfDigital\LaravelUrlShortener\Drivers\FirebaseDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\IsGdDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\ShorteStDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\TinyUrlDriverShortener;
@@ -116,6 +117,22 @@ class UrlShortener implements UrlFactory
         return new CuttLyDriverShortener(
             $this->app->make(ClientInterface::class),
             Arr::get($config, 'token')
+        );
+    }
+
+    /**
+     * Create an instance of Firebase driver
+     *
+     * @param array $config
+     * @return FirebaseDriverShortener
+     */
+    protected function createFirebaseDriver(array $config)
+    {
+        return new FirebaseDriverShortener(
+            $this->app->make(ClientInterface::class),
+            Arr::get($config, 'token'),
+            Arr::get($config, 'domain'),
+            Arr::get($config, 'suffix')
         );
     }
 
