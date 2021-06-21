@@ -6,7 +6,9 @@ use CodeOfDigital\LaravelUrlShortener\Contracts\UrlFactory;
 use CodeOfDigital\LaravelUrlShortener\Drivers\BitLyDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\CuttLyDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\FirebaseDriverShortener;
+use CodeOfDigital\LaravelUrlShortener\Drivers\HideUriDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\IsGdDriverShortener;
+use CodeOfDigital\LaravelUrlShortener\Drivers\OuoIoDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\ShorteStDriverShortener;
 use CodeOfDigital\LaravelUrlShortener\Drivers\TinyUrlDriverShortener;
 use GuzzleHttp\ClientInterface;
@@ -133,6 +135,30 @@ class UrlShortener implements UrlFactory
             Arr::get($config, 'token'),
             Arr::get($config, 'domain'),
             Arr::get($config, 'suffix')
+        );
+    }
+
+    /**
+     * Create an instance of HideUri driver
+     *
+     * @return HideUriDriverShortener
+     */
+    protected function createHideUriDriver()
+    {
+        return new HideUriDriverShortener($this->app->make(ClientInterface::class));
+    }
+
+    /**
+     * Create an instance of Ouo.io driver
+     *
+     * @param array $config
+     * @return OuoIoDriverShortener
+     */
+    protected function createOuoIoDriver(array $config)
+    {
+        return new OuoIoDriverShortener(
+            $this->app->make(ClientInterface::class),
+            Arr::get($config, 'token')
         );
     }
 

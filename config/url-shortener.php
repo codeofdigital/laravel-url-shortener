@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'default' => env('URL_SHORTENER_DRIVER', 'bit_ly'),
+    'default' => env('URL_SHORTENER_DRIVER', 'hide_uri'),
 
     'shorteners' => [
 
@@ -37,6 +37,15 @@ return [
             'domain' => env('URL_SHORTENER_PREFIX'),
             'token' => env('URL_SHORTENER_API_TOKEN'),
             'suffix' => env('URL_SHORTENER_SUFFIX', 'UNGUESSABLE')
+        ],
+
+        'hide_uri' => [
+            'driver' => 'hide_uri'
+        ],
+
+        'ouo_io' => [
+            'driver' => 'ouo_io',
+            'token' => env('URL_SHORTENER_API_TOKEN')
         ]
     ]
 ];
