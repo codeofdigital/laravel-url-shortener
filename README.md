@@ -19,6 +19,10 @@ Powerful URL shortening tool using different drivers for your Laravel projects
 - [Usage](#usage)
     - [Instantiate Shortener](#instantiate-shortener)
     - [Changing driver](#changing-driver)
+- [Available Drivers](#available-drivers)
+- [Changelog](#changelog)
+- [Security](#security)
+- [Credits](#credits)
 - [License](#license)
 
 ## Overview
@@ -118,6 +122,30 @@ Method          | Description
 ### Changing Driver
 You can change the default driver by setting `URL_SHORTENER_DRIVER={driver}` in your environment file
 or publish the config file and make your changes there directly.
+
+## Available Drivers
+There are total of 8 drivers available in this package. Below is a list of drivers with their respective specs:
+
+Service                        | API Token | Driver name | Analytics | Monetization
+-------------------------------|-----------|-------------|-----------|-------------
+[Bit.ly](#bitly)               | yes       | `bit_ly`    | yes       | no
+[TinyURL](#tinyurl)            | yes       | `tiny_url`  | no        | no
+[Shorte.st](#shortest)         | yes       | `shorte_st` | yes       | yes
+[Is.gd](#isgd)                 | no        | `is_gd`     | yes       | no
+[Cutt.ly](#cuttly)             | yes       | `cutt_ly`   | yes       | no
+[HideUri](#hideuri)            | no        | `hide_uri`  | no        | no
+[Firebase Links](#firebase)    | yes       | `firebase`  | yes       | no
+[Ouo.io](#ouoio)               | no        | `ouo_io`    | yes       | yes
+
+## Changelog
+Please see [CHANGELOG](CHANGELOG.md) for more information what has been changed in recent versions.
+
+## Security
+If you discover any security related issues, please email one of the authors instead of using the issue tracker. You can
+find the author emails in the [composer.json](composer.json).
+
+## Credits
+- [Bryan Adam Loh](https://github.com/bryanadamloh)
 
 ## License
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
